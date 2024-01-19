@@ -11,11 +11,9 @@ export default class WebSocketManager {
     }
 
     /**
-     * 初始化
-     * @param {String} url WebSocket 连接地址
-     * @param {String} id 用户ID
+     * 开启WebSocket
      */
-    async initialize() {
+    async start() {
         if( this.url && this.id){
             // 连接WebSocket
             this.connectWebSocket()
