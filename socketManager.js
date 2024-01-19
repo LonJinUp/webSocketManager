@@ -1,12 +1,13 @@
 export default class WebSocketManager {
-    constructor() {
+    constructor(url = null, userId = null, receiveMessageCallback = null) {
         this.socket = null // WebSocket 对象
         this.pingTimeout = null // 心跳计时器
         this.reconnectTimeout = 5000 // 重连间隔，单位：毫秒
         this.maxReconnectAttempts = 10 // 最大重连尝试次数
         this.reconnectAttempts = 0; // 当前重连尝试次数
-        this.id = null //用户ID（业务逻辑，根据自己业务需求调整）
-        this.url = null // WebSocket 连接地址
+        this.id = userId //用户ID（业务逻辑，根据自己业务需求调整）
+        this.url = url // WebSocket 连接地址
+        this.receiveMessageCallback = receiveMessageCallback // 接收消息回调函数
     }
 
     /**
@@ -14,9 +15,7 @@ export default class WebSocketManager {
      * @param {String} url WebSocket 连接地址
      * @param {String} id 用户ID
      */
-    async initialize(url, id) {
-        this.url = url
-        this.id = id
+    async initialize() {
         if( this.url && this.id){
             // 连接WebSocket
             this.connectWebSocket()
@@ -97,6 +96,7 @@ export default class WebSocketManager {
     receiveMessage(event) {
         // 根据业务自行处理
         console.log('receiveMessage:', event.data)
+        this.receiveMessageCallback && this.receiveMessageCallback(event.data)
     }
 
      /**
